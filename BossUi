@@ -41,7 +41,7 @@ if game.PlaceId == 99995671928896 then
 		end
 	end
 	game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-	local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/EntomaSan/Rune/refs/heads/main/uilib?token=GHSAT0AAAAAADBA2EF4LSGXINX2EIBQAFVA2AIFLKA"))()
+	local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/EntomaSan/Rune/refs/heads/main/uilib"))()
 	local Window = Library.Window('KR4K Library')
 	local Test1 = Window.CreateTab('Main')
 	local Boss = Window.CreateTab('TP Boss')
