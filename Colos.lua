@@ -1,4 +1,5 @@
 spawn(function()
+	print"Started"
 	task.wait(2400)
 	game:GetService("TeleportService"):Teleport(10290054819, game.Players.LocalPlayer)
 end)
