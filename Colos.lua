@@ -587,7 +587,7 @@ pcall(function()
 							wait(.2)
 						end
 					end
-				end
+				ends
 				wait(1)
 				game:GetService("Players").LocalPlayer.Character.CharacterHandler.Input.Events.DialogueEvent:FireServer()
 				wait(.2)
