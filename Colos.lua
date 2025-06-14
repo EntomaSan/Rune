@@ -287,7 +287,8 @@ pcall(function()
 									local clickPos = absPos + (absSize / 2)
 
 									-- Simulate a left mouse click at the button's position
-									print"Spawn"
+									game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+									wait(3)
 								end
 								task.wait()
 							until not gui:FindFirstChild("ConfirmFrame")
@@ -389,7 +390,8 @@ pcall(function()
 											local clickPos = absPos + (absSize / 2)
 
 											-- Simulate a left mouse click at the button's position
-											print("spawn")
+											game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+											wait(3)
 										end
 										task.wait()
 									until not gui:FindFirstChild("ConfirmFrame")
@@ -502,7 +504,8 @@ pcall(function()
 												local clickPos = absPos + (absSize / 2)
 
 												-- Simulate a left mouse click at the button's position
-												print("Spawn")
+												game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+												wait(3)
 											end
 											task.wait()
 										until not gui:FindFirstChild("ConfirmFrame")
@@ -622,7 +625,8 @@ pcall(function()
 												local clickPos = absPos + (absSize / 2)
 
 												-- Simulate a left mouse click at the button's position
-												print"spawn"
+												game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+												wait(3)
 											end
 											task.wait()
 										until not gui:FindFirstChild("ConfirmFrame")
@@ -857,7 +861,8 @@ pcall(function()
 
 							local clickPos = absPos + (absSize / 2)
 
-							print"Spawn"
+							game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+							wait(3)
 						end
 					end
 					wait()
@@ -932,7 +937,8 @@ pcall(function()
 									local clickPos = absPos + (absSize / 2)
 
 									-- Simulate a left mouse click at the button's position
-									print"Spawn"
+									game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+									wait(3)
 								end
 								task.wait()
 							until not gui:FindFirstChild("ConfirmFrame")
