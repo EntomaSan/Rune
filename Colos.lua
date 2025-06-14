@@ -287,7 +287,7 @@ pcall(function()
 									local clickPos = absPos + (absSize / 2)
 
 									-- Simulate a left mouse click at the button's position
-									game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+									--game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 									wait(3)
 								end
 								task.wait()
@@ -390,7 +390,7 @@ pcall(function()
 											local clickPos = absPos + (absSize / 2)
 
 											-- Simulate a left mouse click at the button's position
-											game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+											--game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 											wait(3)
 										end
 										task.wait()
@@ -504,7 +504,7 @@ pcall(function()
 												local clickPos = absPos + (absSize / 2)
 
 												-- Simulate a left mouse click at the button's position
-												game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+												--game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 												wait(3)
 											end
 											task.wait()
@@ -625,7 +625,7 @@ pcall(function()
 												local clickPos = absPos + (absSize / 2)
 
 												-- Simulate a left mouse click at the button's position
-												game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+												--game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 												wait(3)
 											end
 											task.wait()
@@ -806,6 +806,7 @@ pcall(function()
 					}
 
 					netModule.connect("MasterEvent", "FireServer", plr.Character, tradeData)
+					task.wait(.5)
 					if _G.attack == false then
 						break
 					end
@@ -861,7 +862,7 @@ pcall(function()
 
 							local clickPos = absPos + (absSize / 2)
 
-							game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+							--game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 							wait(3)
 						end
 					end
@@ -937,7 +938,7 @@ pcall(function()
 									local clickPos = absPos + (absSize / 2)
 
 									-- Simulate a left mouse click at the button's position
-									game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+									--game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 									wait(3)
 								end
 								task.wait()
