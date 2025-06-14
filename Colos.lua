@@ -154,34 +154,41 @@ pcall(function()
 		repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild"Menu"
 		repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Menu:FindFirstChild"ButtonFrame"
 		repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Menu.ButtonFrame:FindFirstChild"PlayButton"
-		local playButton = game:GetService("Players").LocalPlayer.PlayerGui.Menu.ButtonFrame.PlayButton
-		local position = playButton.AbsolutePosition
-		local size = playButton.AbsoluteSize
-		local centerX = position.X + size.X / 2
-		local centerY = position.Y + size.Y / 2
-		repeat wait(.25)
-			game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerX, centerY+65, 0, true, game, 0)
-			game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerX, centerY+65, 0, false, game, 0)
-		until game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui") and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Slots")
-		wait()
-		repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Slots:FindFirstChild"CharacterSlots"
-		repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Slots.CharacterSlots:FindFirstChild"ScrollingFrame"
-		repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Slots.CharacterSlots.ScrollingFrame:FindFirstChild"Slot_1"
-		local slotbutton = game:GetService("Players").LocalPlayer.PlayerGui.Slots.CharacterSlots.ScrollingFrame.Slot_1
-		local positionslot = slotbutton.AbsolutePosition
-		local sizeslot = slotbutton.AbsoluteSize
-		local centerslotX = positionslot.X + sizeslot.X / 2
-		local centerslotY = positionslot.Y + sizeslot.Y / 2
-		repeat wait(.25)
-			game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerslotX, centerslotY + 65, 0, true, game, 0)
-			game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerslotX, centerslotY + 65, 0, false, game, 0)
-		until game.Players.LocalPlayer.Character ~= nil
+		local startA = tick()
+		repeat
+    		pcall(function()
+            		if game.Players.LocalPlayer.ClientNetwork:FindFirstChild"MenuOptions" then
+            		local args = {
+                        [1] = {
+                            ["config"] = "start_screen"
+                        }
+                    }
+                    
+                    game:GetService("Players").LocalPlayer.ClientNetwork.MenuOptions:FireServer(unpack(args))
+        	    end
+            		if game.Players.LocalPlayer.ClientNetwork:FindFirstChild"MenuOptions" then
+                    local args = {
+                        [1] = {
+                            ["slot"] = "Slot_1",
+                            ["config"] = "slots"
+                        }
+                    }
+                    
+                    game:GetService("Players").LocalPlayer.ClientNetwork.MenuOptions:FireServer(unpack(args))
+        	    end
+        		wait(2)
+    	    end)
+		until game.Players.LocalPlayer.Character ~= nil or (tick() - startA) >= 20
+		if tick() - startA >= 20 then
+			game:GetService("TeleportService"):Teleport(10290054819, player)
+		end
 		repeat wait() until game.Players.LocalPlayer.Character:FindFirstChild"HumanoidRootPart"
 		repeat wait() until game.Players.LocalPlayer.Character:FindFirstChild"CharacterHandler"
 		repeat wait() until game.Players.LocalPlayer.Character:FindFirstChild"CharacterHandler":FindFirstChild"Input"
 		repeat wait() until game.Players.LocalPlayer.Character:FindFirstChild"CharacterHandler":FindFirstChild"Input":FindFirstChild"Events"
 		repeat wait() until game.Players.LocalPlayer.Character:FindFirstChild"CharacterHandler":FindFirstChild"Input":FindFirstChild"Events":FindFirstChild"MasterEvent"
 		wait(.5)
+		print"Detected Character"
 		game:GetService("Players").LocalPlayer.Idled:Connect(function()
 			game:GetService("VirtualUser"):CaptureController()
 			game:GetService("VirtualUser"):ClickButton2(Vector2.new(math.random(10, 50), math.random(10, 50)))
@@ -212,30 +219,6 @@ pcall(function()
 
 		local MainTick = tick()
 		repeat wait() until CurrentCheck >= #game.Players:GetChildren() or tick() - MainTick >= 4
-		-- NoFall
-		local mt = getrawmetatable(game)
-		local oldMeta = mt.__namecall
-
-		-- Function to make metatables writeable (for bypassing the protection)
-		setreadonly(mt, false)
-
-		mt.__namecall = newcclosure(function(self, ...)
-			local method = getnamecallmethod()
-			local args = {...}
-
-			-- Check if method is "FireServer" and the arguments match our criteria
-			if method == "FireServer" and #args == 1 and typeof(args[1]) == "table" then
-				-- Check if Config is FallDamage
-				if args[1]["Config"] == "FallDamage" then
-					return false  -- Block the remote event
-				end
-			end
-
-			-- Call the original method if the condition is not met
-			return oldMeta(self, ...)
-		end)
-
-		setreadonly(mt, true)
 		local TeleportService = game:GetService("TeleportService")
 		local Players = game:GetService("Players")
 
@@ -261,7 +244,6 @@ pcall(function()
 				if confirmFrame then
 					task.delay(8, function()
 						if infoOverlays:FindFirstChild("ConfirmFrame") then
-							local VirtualInputManager = game:GetService("VirtualInputManager")
 							local Players = game:GetService("Players")
 
 							local player = Players.LocalPlayer
@@ -305,8 +287,7 @@ pcall(function()
 									local clickPos = absPos + (absSize / 2)
 
 									-- Simulate a left mouse click at the button's position
-									VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, true, game, 0) -- Mouse down
-									VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, false, game, 0) -- Mouse up
+									print"Spawn"
 								end
 								task.wait()
 							until not gui:FindFirstChild("ConfirmFrame")
@@ -319,7 +300,7 @@ pcall(function()
 				end
 			end
 		end)
-
+		print"Checked"
 		_G.Botting = function()
 			repeat wait() until game.Players.LocalPlayer ~= nil
 			repeat wait() until game.Players.LocalPlayer.Character ~= nil
@@ -354,7 +335,7 @@ pcall(function()
 
 			game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 			fireproximityprompt(workspace.InvisibleParts.ColosseumEntrance.InteractPrompt)
-
+			print"Tped"
 			local startTime = tick()
 			while (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(1025.1005859375, -197.8874969482422, 1363.8944091796875)).magnitude >= 10 do
 				if tick() - startTime > 2 then
@@ -365,7 +346,6 @@ pcall(function()
 									repeat wait()
 										game.Players.LocalPlayer.Character.Humanoid.Health = 0
 									until game.Players.LocalPlayer.Character.Humanoid.Health == 0
-									local VirtualInputManager = game:GetService("VirtualInputManager")
 									local Players = game:GetService("Players")
 
 									local player = Players.LocalPlayer
@@ -409,8 +389,7 @@ pcall(function()
 											local clickPos = absPos + (absSize / 2)
 
 											-- Simulate a left mouse click at the button's position
-											VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, true, game, 0) -- Mouse down
-											VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, false, game, 0) -- Mouse up
+											print("spawn")
 										end
 										task.wait()
 									until not gui:FindFirstChild("ConfirmFrame")
@@ -466,6 +445,7 @@ pcall(function()
 			end
 
 			if (currentWeight >= maxWeight or currentWeight >= 200) and Found == true then
+				print"Checking Weight"
 				game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 				fireproximityprompt(workspace.InvisibleParts.ColosseumEntrance.InteractPrompt)
 
@@ -479,7 +459,6 @@ pcall(function()
 										repeat wait()
 											game.Players.LocalPlayer.Character.Humanoid.Health = 0
 										until game.Players.LocalPlayer.Character.Humanoid.Health == 0
-										local VirtualInputManager = game:GetService("VirtualInputManager")
 										local Players = game:GetService("Players")
 
 										local player = Players.LocalPlayer
@@ -523,8 +502,7 @@ pcall(function()
 												local clickPos = absPos + (absSize / 2)
 
 												-- Simulate a left mouse click at the button's position
-												VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, true, game, 0) -- Mouse down
-												VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, false, game, 0) -- Mouse up
+												print("Spawn")
 											end
 											task.wait()
 										until not gui:FindFirstChild("ConfirmFrame")
@@ -544,9 +522,7 @@ pcall(function()
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-386.4886779785156, 154.18463134765625, -955.7117309570312)
 				game.Workspace.Camera.CFrame = CFrame.new(-375.058167, 161.526382, -955.592163, 0.00871383399, -0.464894921, 0.885323048, 0, 0.885356724, 0.464912534, -0.999962091, -0.00405117078, 0.00771485083)
 				wait(1)
-				game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, nil)
-				wait()
-				game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, nil)
+				print"Talk"
 				wait(1)
 				local player = game:GetService("Players").LocalPlayer
 				local backpack = player.Backpack
@@ -603,7 +579,6 @@ pcall(function()
 										repeat wait()
 											game.Players.LocalPlayer.Character.Humanoid.Health = 0
 										until game.Players.LocalPlayer.Character.Humanoid.Health == 0
-										local VirtualInputManager = game:GetService("VirtualInputManager")
 										local Players = game:GetService("Players")
 
 										local player = Players.LocalPlayer
@@ -647,8 +622,7 @@ pcall(function()
 												local clickPos = absPos + (absSize / 2)
 
 												-- Simulate a left mouse click at the button's position
-												VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, true, game, 0) -- Mouse down
-												VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, false, game, 0) -- Mouse up
+												print"spawn"
 											end
 											task.wait()
 										until not gui:FindFirstChild("ConfirmFrame")
@@ -672,12 +646,14 @@ pcall(function()
 			end
 			--Start
 			wait()
+			print"Start"
 			local start = false
 			local starttime = tick()
 			local Drogar = nil
 			local Detected = false
 			local waitdrogartick = tick()
 			checkAndTeleport()
+			print"Check teleport"
 			repeat
 				wait()
 				local found = false
@@ -688,6 +664,7 @@ pcall(function()
 					end
 				end
 			until not found
+			print"No drogar"
 			while Drogar == nil do
 				for i,v in pairs(workspace.Alive:GetChildren()) do
 					if v.Name:find"Drogar" then
@@ -697,9 +674,36 @@ pcall(function()
 				task.wait()
 				if Drogar == nil then
 					local Old = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-					game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.D, false, game)
-					task.wait(.25)
-					game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.D, false, game)
+                     local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+                     local humanoid = character:WaitForChild("Humanoid")
+                     local rootPart = character:WaitForChild("HumanoidRootPart")
+                     
+                     local targetPosition = rootPart.Position + Vector3.new(10, 0, 0)
+                     
+                     local finished = false
+                     
+                     -- Start a thread to listen for walk finished
+                     
+                     -- Wait up to 5 seconds
+                     local timeout = 5
+                     local elapsed = 0
+                     while not finished and elapsed < timeout do
+                         task.wait(0.1)
+						 humanoid:MoveTo(targetPosition)
+                         elapsed += 0.1
+						 task.spawn(function()
+                         humanoid.MoveToFinished:Wait()
+                         finished = true
+                     end)
+                     end
+                     
+                     if finished then
+                         print("Walk finished.")
+                     else
+                         print("Walk timeout reached.")
+                     end
+                     
+                    print("Walk finished!")
 					task.wait(.25)
 					if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Old).magnitude < 50 then
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Old.X,Old.Y,Old.Z)
@@ -710,6 +714,7 @@ pcall(function()
 					repeat
 						local check = tick()
 						local got = false
+						print"talk"
 						fireproximityprompt(workspace.Effects.NPCS.Drakonar.InteractPrompt)
 						fireproximityprompt(workspace.Effects.NPCS.Drakonar.InteractPrompt)
 						repeat wait() 
@@ -718,9 +723,13 @@ pcall(function()
 							end
 						until got == true or tick()-check >= 0.5
 						if got == true then
-							game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.One, false, game)
-							task.wait(.25)
-							game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.One, false, game)
+               				local args = {
+               					[1] = "Challenge The Demon Claw, Drogar."
+               				}
+               
+               				game:GetService("Players").LocalPlayer.Character.CharacterHandler.Input.Events.DialogueEvent:FireServer(unpack(args))
+							wait(.5)
+							game:GetService("Players").LocalPlayer.Character.CharacterHandler.Input.Events.DialogueEvent:FireServer()
 							local double = tick()
 							repeat wait() until (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(1022.8796, -239.4728, 1610.6086)).magnitude < 10 or tick()-double >= 5
 						end
@@ -832,7 +841,6 @@ pcall(function()
 			_G.checkplayer = false
 			_G.teleport = false
 			if _G.respawn == true or game.Players.LocalPlayer.PlayerGui.InfoOverlays:FindFirstChild"ConfirmFrame" then
-				local VirtualInputManager = game:GetService("VirtualInputManager")
 				game.Players.LocalPlayer.PlayerGui.InfoOverlays:WaitForChild"ConfirmFrame"
 				game.Players.LocalPlayer.PlayerGui.InfoOverlays:WaitForChild"ConfirmFrame":WaitForChild"MainFrame"
 				game.Players.LocalPlayer.PlayerGui.InfoOverlays:WaitForChild"ConfirmFrame":WaitForChild"MainFrame":WaitForChild"ButtonFrame"
@@ -849,8 +857,7 @@ pcall(function()
 
 							local clickPos = absPos + (absSize / 2)
 
-							VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, true, game, 0) -- Mouse down
-							VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, false, game, 0) -- Mouse up
+							print"Spawn"
 						end
 					end
 					wait()
@@ -882,7 +889,6 @@ pcall(function()
 								until game.Players.LocalPlayer.Character.Humanoid.Health == 0
 							end
 
-							local VirtualInputManager = game:GetService("VirtualInputManager")
 							local Players = game:GetService("Players")
 
 							local player = Players.LocalPlayer
@@ -926,8 +932,7 @@ pcall(function()
 									local clickPos = absPos + (absSize / 2)
 
 									-- Simulate a left mouse click at the button's position
-									VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, true, game, 0) -- Mouse down
-									VirtualInputManager:SendMouseButtonEvent(clickPos.X, clickPos.Y + 65, 0, false, game, 0) -- Mouse up
+									print"Spawn"
 								end
 								task.wait()
 							until not gui:FindFirstChild("ConfirmFrame")
